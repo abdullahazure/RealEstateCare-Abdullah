@@ -12,3 +12,7 @@ Below is a list of two user accounts that can be used to log in. Each account is
 | abdullahfa1@realestatecare.com| admin1   |
 
 The user accounts presented in this example are entirely fictional. They have been created strictly for the purpose of demonstrating functionality, and do not correspond to any actual individuals or entities. Any resemblance to real persons, living or dead, is purely coincidental. Please ensure that any data used in real applications adheres to privacy standards and ethical guidelines.
+
+### Data
+API connections related to user and address information are routed through:
+https://jsonbin.io/app/bins

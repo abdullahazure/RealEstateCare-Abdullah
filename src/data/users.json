@@ -1,0 +1,28 @@
+[
+    {
+        "email": "abdullahfa@realestatecare.com",
+        "password": "admin",
+        "id": 2,
+        "firstName": "Abdullah",
+        "lastName": "Fa",
+        "settings": {
+            "darkTheme": false,
+            "notifications": false,
+            "sounds": true
+        }
+    },
+
+    {
+        "email": "abdullahfa1@realestatecare.com",
+        "password": "admin1",
+        "id": 1,
+        "firstName": "Abdullah",
+        "lastName": "Fa",
+        "settings": {
+            "darkTheme": false,
+            "notifications": false,
+            "sounds": true
+        }
+    }
+]
+

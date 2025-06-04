@@ -1,0 +1,75 @@
+:root {
+    --bs-primary: #00aaa2;
+    --bs-primary-rgb: 0, 170, 162;
+    --bs-dark-rgb:  29, 41, 47;
+    --bs-link-hover-color: unset;
+    --color-background: #252526;
+    --color-text: white;
+}
+
+.card {
+    --bs-card-bg: rgba(255,255,255,0.1);
+}
+
+.noWifi {
+    background: var(--color-background);
+    color: var(--color-text);
+}
+
+.form-select::-webkit-select, .form-select::-ms-expand {
+    color: red!important;
+}
+
+.form-control::file-selector-button {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: var(--color-text);
+}
+
+.form-control::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+.form-control, .form-control:focus, .form-control::placeholder, .form-control::-moz-placeholder, .form-check-input, .form-select {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--color-text);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+a:hover, .text-light a:hover {
+    color: whitesmoke;
+    transition: all .5s ease;
+}
+
+.text-dark a:hover {
+    color: gray;
+    transition: all .5s ease;
+}
+
+.router-link-active {
+    color: rgb(202, 202, 202);
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--bs-primary);
+    --bs-btn-border-color: var(--bs-primary);
+    --bs-btn-hover-bg: #018780;
+    --bs-btn-hover-border-color: #00716c;
+    --bs-btn-active-bg: #00716c;
+    --bs-btn-active-border-color: #004b48;
+    --bs-btn-disabled-bg: var(--bs-primary);
+    --bs-btn-disabled-border-color: var(--bs-primary);
+}
+
+a {
+    color: white;
+}
+
+.list-group-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: inherit
+}
+
+.list-group-item-action:focus, .list-group-item-action:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: inherit
+}

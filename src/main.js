@@ -16,11 +16,13 @@ import { createApp } from 'vue'
 import store from './store/store.js'
 
 // Import App.vue and router
-import App from './App.vue'
+import App from '@/App.vue'
 import router from './router'
 
 // Create the Vue app
-const app = createApp(App);
+const app = createApp(App)
+app.use(store)
+app.mount('#app')
 
 // Use Ionic Vue, router, IonIcon and IonToast
 app.use(IonicVue).use(router).use(IonIcon).component('ion-icon', IonIcon, {silent: true}).use(IonToast).use(store);

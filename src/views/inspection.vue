@@ -134,224 +134,153 @@
             </div>
         </div>
     </main>
-</template>
+<script setup>
+import { ref, reactive, onMounted, onBeforeMount } from 'vue';
+import { useRouter } from 'vue-router';
+import { caretDownOutline, caretUpOutline } from 'ionicons/icons';
+import axios from 'axios';
+import store from '../store/store.js';
 
-<script>
-    import { caretDownOutline, caretUpOutline } from 'ionicons/icons';
-    import axios from 'axios';
-    import store from '../store/store.js'
+import DamageComponent from '../components/form/DamageComponent.vue';
+import MaintenanceComponent from '../components/form/MaintenanceComponent.vue';
+import InstallationComponent from '../components/form/InstallationComponent.vue';
+import ModificationComponent from '../components/form/ModificationComponent.vue';
 
-    import DamageComponent from '../components/form/DamageComponent.vue';
-    import MaintenanceComponent from '../components/form/MaintenanceComponent.vue';
-    import InstallationComponent from '../components/form/InstallationComponent.vue';
-    import ModificationComponent from '../components/form/ModificationComponent.vue';
+const router = useRouter();
 
-    export default {
-        name: 'Inspection',
-        // importing the child components to be used in this component
-        components: {
-            DamageComponent,
-            MaintenanceComponent,
-            InstallationComponent,
-            ModificationComponent
-        },
-        mounted() {
-            this.caretDownOutline = caretDownOutline;
-            this.caretUpOutline = caretUpOutline;
+const caretDownIcon = ref(caretDownOutline);
+const caretUpIcon = ref(caretUpOutline);
 
-            this.showDamage = false;
-            this.showMaintenance = false;
-            this.showInstallation = false;
-            this.showModification = false;
-        },
-        data() {
-            return {
-                caretDownOutline: null,
-                caretUpOutline: null,
-                inspection: {
-                    completion: false,
-                    damage: [],
-                    maintenance: [],
-                    installations: [],
-                    modifications: [],
-                    cleanlinessScore: 0
-                },
-                addressId: '',
-                inspectionId: '',
-                showDamage: true,
-                showMaintenance: true,
-                showInstallation: true,
-                showModification: true,
-                showToast: false,
-                toastMessage: '',
-                toastType: '',
-                saving: false,
-            };
-        },
-        // when the component is created, retrieve the inspection data from the API
-        async created() {
-            this.addressId = store.getters.address;
-            let inspectionId = store.getters.inspection;
-            this.inspectionId = inspectionId;
+const showDamage = ref(true);
+const showMaintenance = ref(true);
+const showInstallation = ref(true);
+const showModification = ref(true);
 
-            try {
-                const response = await axios.get(`https://api.jsonbin.io/v3/b/63c1a09815ab31599e35cf00/latest`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': '$2b$10$6OQ5plkCt1vMLN8m7VMniOP5RSMQB3WOfPoQlYh/JNbs2xeF7psUu'
-                    }
-                });
-                // check if the address and inspection exist, and set the inspection data if they do
-                if (response.data.record.addresses !== undefined && response.data.record.addresses !== null) {
-                    if (this.addressId !== undefined && this.addressId !== null && response.data.record.addresses.filter(address => address.id === this.addressId) !== undefined && response.data.record.addresses.filter(address => address.id === this.addressId) !== null) {
-                        let address = response.data.record.addresses.filter(address => address.id === this.addressId);
-                        if (address.length > 0) {
-                            address = address[0];
-                            if (address.inspections.filter(inspection => inspection.id === inspectionId) !== undefined && address.inspections.filter(inspection => inspection.id === inspectionId) !== null) {
-                                let inspection = address.inspections.filter(inspection => inspection.id === inspectionId);
-                                if (inspection.length > 0) {
-                                    this.inspection = inspection[0];
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        methods: {
-            addDamage() {
-                // Add new damage array
-                this.inspection.damage.push({});
-            },
-            removeDamage(index) {
-                this.inspection.damage.splice(index, 1);
-            },
-            addMaintenance() {
-                // Add new maintenace array
-                this.inspection.maintenance.push({});
-            },
-            removeMaintenace(index) {
-                this.inspection.maintenance.splice(index, 1);
-            },
-            addInstallation() {
-                // Add new installation array
-                this.inspection.installations.push({});
-            },
-            removeInstallation(index) {
-                this.inspection.installations.splice(index, 1);
-            },
-            addModification() {
-                // Add new modifications array
-                this.inspection.modifications.push({});
-            },
-            removeModification(index) {
-                this.inspection.modifications.splice(index, 1);
-            },
-            async saveInspection() {
-                try {
-                    //set the saving state to true
-                    this.saving = true;
-                    //get the data from the api
-                    const response = await axios.get(`https://api.jsonbin.io/v3/b/63c1a09815ab31599e35cf00/latest`, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Master-Key': '$2b$10$6OQ5plkCt1vMLN8m7VMniOP5RSMQB3WOfPoQlYh/JNbs2xeF7psUu'
-                        }
-                    });
+const inspection = reactive({
+  completion: false,
+  damage: [],
+  maintenance: [],
+  installations: [],
+  modifications: [],
+  cleanlinessScore: 0,
+  somethingBroken: false
+});
 
-                    //find the index of the address and inspection in the response data
-                    const addressIndex = response.data.record.addresses.findIndex(address => address.id === this.addressId);
-                    const inspectionIndex = response.data.record.addresses[addressIndex].inspections.findIndex(inspection => inspection.id === this.inspectionId);
+const addressId = ref('');
+const inspectionId = ref('');
+const showToast = ref(false);
+const toastMessage = ref('');
+const toastType = ref('');
+const saving = ref(false);
 
-                    //update the data in the response object
-                    response.data.record.addresses[addressIndex].inspections[inspectionIndex].completion = this.inspection.completion;
-                    response.data.record.addresses[addressIndex].inspections[inspectionIndex].damage = this.inspection.damage;
-                    response.data.record.addresses[addressIndex].inspections[inspectionIndex].maintenance = this.inspection.maintenance;
-                    response.data.record.addresses[addressIndex].inspections[inspectionIndex].installations = this.inspection.installations;
-                    response.data.record.addresses[addressIndex].inspections[inspectionIndex].modifications = this.inspection.modifications;
-                    response.data.record.addresses[addressIndex].inspections[inspectionIndex].cleanlinessScore = this.inspection.cleanlinessScore;
-                    response.data.record.addresses[addressIndex].inspections[inspectionIndex].somethingBroken = this.inspection.somethingBroken;
+onBeforeMount(async () => {
+  addressId.value = store.getters.address;
+  inspectionId.value = store.getters.inspection;
 
-                    //put the updated data back to the api
-                    const update = await axios.put(`https://api.jsonbin.io/v3/b/63c1a09815ab31599e35cf00`, {
-                        addresses: response.data.record.addresses,
-                    }, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Master-Key': '$2b$10$6OQ5plkCt1vMLN8m7VMniOP5RSMQB3WOfPoQlYh/JNbs2xeF7psUu'
-                        }
-                    });
+  try {
+    const response = await axios.get(`https://api.jsonbin.io/v3/b/63c1a09815ab31599e35cf00/latest`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': '...'
+      }
+    });
 
-                    // Check if the status is 200 if so show succes toast
-                    if (update.status === 200) {
-                        this.toastType = 'success';
-                        this.toastMessage = 'Inspection saved successfully';
-                        this.showToast = true;
+    const addresses = response.data.record.addresses;
+    const address = addresses.find(a => a.id === addressId.value);
 
-                        // Remove toast after 3 seconds
-                        setTimeout(() => {
-                            this.toastType = '';
-                            this.toastMessage = '';
-                            this.showToast = false;
-                        }, 3000);
-                    }
-
-                    // Check if the status is not 200 if so show error toast
-                    if (update.status !== 200) {
-                        this.toastType = 'error';
-                        this.toastMessage = 'Inspection not saved, error occurred';
-                        this.showToast = true;
-
-                        // Remove toast after 3 seconds
-                        setTimeout(() => {
-                            this.toastType = '';
-                            this.toastMessage = '';
-                            this.showToast = false;
-                        }, 3000);
-                    }
-                } catch (error) {
-                    // Save the inspection to the offlineInspection array when there's no internet connection
-                    let offlineInspections = store.getters.offlineInspections || [];
-                    this.inspection.inspectionId = this.inspectionId;
-                    this.inspection.addressId = this.addressId;
-                    offlineInspections.push(this.inspection);
-                    store.commit("setOfflineInspections", offlineInspections);
-                    this.toastType = 'error';
-                    this.toastMessage = 'You do not have wifi, Inspection saved in offline mode';
-                    this.showToast = true;
-
-                    setTimeout(() => {
-                        this.toastType = '';
-                        this.toastMessage = '';
-                        this.showToast = false;
-                    }, 3000);
-                } finally {
-                    this.saving = false;
-                }
-            },
-            cancelInspection() {
-                // If called send user to the inspections view
-                try {
-                    this.$router.push({ name: 'inspections' });
-                } catch (error) {
-                    console.log(error);
-                }
-            },
-            completeInspection() {
-                // If called send user to the inspections view, complete the inspection and save the inspection
-                this.inspection.completion = true;
-                this.saveInspection();
-                
-                try {
-                    store.commit("toggleCompletion", true)
-
-                    this.$router.push({ name: 'inspection' });
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        }
+    if (address) {
+      const foundInspection = address.inspections.find(i => i.id === inspectionId.value);
+      if (foundInspection) {
+        Object.assign(inspection, foundInspection);
+      }
     }
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+// ✅ LOGICA FUNCTIES
+
+const addDamage = () => inspection.damage.push({});
+const removeDamage = (index) => inspection.damage.splice(index, 1);
+
+const addMaintenance = () => inspection.maintenance.push({});
+const removeMaintenance = (index) => inspection.maintenance.splice(index, 1);
+
+const addInstallation = () => inspection.installations.push({});
+const removeInstallation = (index) => inspection.installations.splice(index, 1);
+
+const addModification = () => inspection.modifications.push({});
+const removeModification = (index) => inspection.modifications.splice(index, 1);
+
+const saveInspection = async () => {
+  try {
+    saving.value = true;
+
+    const response = await axios.get(`https://api.jsonbin.io/v3/b/63c1a09815ab31599e35cf00/latest`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': '...'
+      }
+    });
+
+    const addresses = response.data.record.addresses;
+    const addressIndex = addresses.findIndex(a => a.id === addressId.value);
+    const inspectionIndex = addresses[addressIndex].inspections.findIndex(i => i.id === inspectionId.value);
+
+    if (addressIndex !== -1 && inspectionIndex !== -1) {
+      Object.assign(addresses[addressIndex].inspections[inspectionIndex], inspection);
+
+      const update = await axios.put(`https://api.jsonbin.io/v3/b/63c1a09815ab31599e35cf00`, {
+        addresses
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': '...'
+        }
+      });
+
+      if (update.status === 200) {
+        toastType.value = 'success';
+        toastMessage.value = 'Inspection saved successfully';
+      } else {
+        toastType.value = 'error';
+        toastMessage.value = 'Inspection not saved, error occurred';
+      }
+    }
+  } catch (error) {
+    // Offline fallback
+    const offline = store.getters.offlineInspections || [];
+    inspection.inspectionId = inspectionId.value;
+    inspection.addressId = addressId.value;
+    offline.push({ ...inspection });
+    store.commit("setOfflineInspections", offline);
+
+    toastType.value = 'error';
+    toastMessage.value = 'You do not have wifi, Inspection saved in offline mode';
+  } finally {
+    showToast.value = true;
+    setTimeout(() => (showToast.value = false), 3000);
+    saving.value = false;
+  }
+};
+
+const cancelInspection = () => {
+  try {
+    router.push({ name: 'inspections' });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const completeInspection = () => {
+  inspection.completion = true;
+  saveInspection();
+  try {
+    store.commit("toggleCompletion", true);
+    router.push({ name: 'inspection' });
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>

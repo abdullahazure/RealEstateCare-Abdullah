@@ -35,6 +35,45 @@
       </div>
       <div class="col-sm"></div>
     </div>
+        <!-- login form -->
+        <form @submit.prevent="loginRoute" id="login" name="login" method="post">
+          <!-- Toegevoegde hinttekst onder elk invoerveld -->
+<div class="mb-3">
+  <label for="email" class="form-label">Email</label>
+  <input
+    type="email"
+    class="form-control"
+    id="email"
+    name="email"
+    v-model="email"
+    aria-describedby="emailHelp"
+  >
+  <div id="emailHelp" class="form-text">Voer een geldig e-mailadres in.</div>
+</div>
+
+<div class="mb-3">
+  <label for="password" class="form-label">Wachtwoord</label>
+  <input
+    type="password"
+    class="form-control"
+    id="password"
+    name="password"
+    v-model="password"
+    aria-describedby="passwordHelp"
+  >
+  <div id="passwordHelp" class="form-text">Voer je wachtwoord in.</div>
+</div>
+
+<!-- Toast met verbeterde toegankelijkheid -->
+<div v-if="showToast" class="toast-container">
+  <div
+    :class="['toast', 'toast-' + toastType, { show: showToast }]"
+    aria-live="assertive"
+    aria-atomic="true">
+    {{ toastMessage }}
+  </div>
+</div>
+        </form>
   </main>
 </template>
 

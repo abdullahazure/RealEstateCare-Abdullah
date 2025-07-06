@@ -1,139 +1,127 @@
 <template>
-    <main class="container">
-        <!-- button to go back to inspection list -->
-        <button type="button" class="btn btn-danger" @click="cancelInspection()" aria-label="Back to inspections">Back to inspections</button> 
-        <form v-if="typeof this.inspection !== 'undefined' && this.inspection.id !== ''" @submit.prevent="saveInspection" aria-label="Form to edit inspection">
-            <h1>Inspection {{ inspection.id }}</h1>
-            <div class="form-group">
-                <label for="cleanlinessScore" aria-label="Cleanliness Score">Cleanliness Score</label>
-                <select v-model="inspection.cleanlinessScore" class="form-select" id="cleanlinessScore" aria-label="Cleanliness score dropdown">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
-            </div>
-            <!-- Damage section -->
-            <div class="form-group my-3 py-3">
-                <h2>
-                    <!-- Toggle button to show/hide the damage section -->
-                    <button type="button" class="btn btn-secondary" @click="showDamage = !showDamage" aria-label="Toggle damage section">
-                        <ion-icon v-if="!showDamage" class="m-auto" id="navigation-caretDownOutline-icon" :icon="caretDownOutline"></ion-icon>
-                        <ion-icon v-if="showDamage" class="m-auto" id="navigation-caretUpOutline-icon" :icon="caretUpOutline"></ion-icon>
-                    </button>
-                    <span class="ms-3">Damage</span>
-                </h2>
-                <!-- Button to add a new damage item -->
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-primary" @click="addDamage" aria-label="Add new damage item">Add Damage</button>
-                </div>
-                <!-- Transition to show/hide the damage items -->
-                <transition name="fade">
-                    <div v-if="showDamage" class="d-flex gap-3 flex-column mt-3">
-                        <!-- Component to display and edit a damage item -->
-                        <damage-component v-for="(damage, index) in inspection.damage" :key="index" :damage="damage" @destroy="removeDamage(index)" aria-label="Damage item"></damage-component>
-                    </div>
-                </transition>
-            </div>
+  <main class="container">
+    <button type="button" class="btn btn-danger" @click="cancelInspection" aria-label="Back to inspections">Back to inspections</button>
 
-            <!-- Maintenance section -->
-            <div class="form-group my-3 py-3">
-                <h2>
-                    <!-- Toggle button to show/hide the maintenance section -->
-                    <button type="button" class="btn btn-secondary" @click="showMaintenance = !showMaintenance" aria-label="Toggle maintenance section">
-                        <ion-icon v-if="!showMaintenance" class="m-auto" id="navigation-caretDownOutline-icon" :icon="caretDownOutline"></ion-icon>
-                        <ion-icon v-if="showMaintenance" class="m-auto" id="navigation-caretUpOutline-icon" :icon="caretUpOutline"></ion-icon>
-                    </button>
-                    <span class="ms-3">Maintenance</span>
-                </h2>
-                <!-- button to add a new maintenance item -->
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-primary" @click="addMaintenance" aria-label="Add new maintenance item">Add Maintenance</button>
-                </div>
-                <!-- Transition to show/hide the maintenance items -->
-                <transition name="fade">
-                    <div v-if="showMaintenance" class="d-flex gap-3 flex-column mt-3">
-                        <!-- Component to display and edit a maintenance item -->
-                        <maintenance-component v-for="(maintenance, index) in inspection.maintenance" :key="index" :maintenance="maintenance" @destroy="removeMaintenace(index)" aria-label="Maintenance item"></maintenance-component>
-                    </div>
-                </transition>
-            </div>
-            <!-- Installation section -->
-            <div class="form-group my-3 py-3">
-                <h2>
-                    <!-- Toggle button to show/hide the installation section -->
-                    <button type="button" class="btn btn-secondary" @click="showInstallation = !showInstallation" aria-label="Toggle Installation section">
-                        <ion-icon v-if="!showInstallation" class="m-auto" id="navigation-caretDownOutline-icon" :icon="caretDownOutline"></ion-icon>
-                        <ion-icon v-if="showInstallation" class="m-auto" id="navigation-caretUpOutline-icon" :icon="caretUpOutline"></ion-icon>
-                    </button>
-                    <span class="ms-3">Installations</span>
-                </h2>
+    <form v-if="inspection && inspection.id !== ''" @submit.prevent="saveInspection" aria-label="Form to edit inspection">
+      <h1>Inspection {{ inspection.id }}</h1>
 
-                <!-- button to add a new installation item -->
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-primary" @click="addInstallation" aria-label="Add Installation">Add Installation</button>
-                </div>
-                <!-- Transition to show/hide the installation items -->
-                <transition name="fade">
-                    <div v-if="showInstallation" class="d-flex gap-3 flex-column mt-3">
-                        <!-- Component to display and edit a installation item -->
-                        <installation-component v-for="(installation, index) in inspection.installation" :key="index" :installation="installation" @destroy="removeInstallation(index)" aria-label="Installation Component"></installation-component>
-                    </div>
-                </transition>
-            </div>
-            <!-- Modifications section -->
-            <div class="form-group my-3 py-3">
-                <h2>
-                    <!-- Toggle button to show/hide the modifications section -->
-                    <button type="button" class="btn btn-secondary" @click="showModification = !showModification" aria-label="Toggle modifications section">
-                        <ion-icon v-if="!showModification" class="m-auto" id="navigation-caretDownOutline-icon" :icon="caretDownOutline" aria-hidden="true"></ion-icon>
-                        <ion-icon v-if="showModification" class="m-auto" id="navigation-caretUpOutline-icon" :icon="caretUpOutline" aria-hidden="true"></ion-icon>
-                    </button>
-                    <span class="ms-3">Modifications</span>
-                </h2>
+      <div class="form-group">
+        <label for="cleanlinessScore">Cleanliness Score</label>
+        <select v-model="inspection.cleanlinessScore" class="form-select" id="cleanlinessScore">
+          <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
+        </select>
+      </div>
 
-                <!-- button to add a new modifications item -->
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-primary" @click="addModification" aria-label="Add modification">Add Modification</button>
-                </div>
-                <!-- Transition to show/hide the modifications items -->
-                <transition name="fade">
-                    <div v-if="showModification" class="d-flex gap-3 flex-column mt-3">
-                        <!-- Component to display and edit a modifications item -->
-                        <modification-component v-for="(modification, index) in inspection.modifications" :key="index" :modification="modification" @destroy="removeModification(index)" aria-label="Modification item"></modification-component>
-                    </div>
-                </transition>
-            </div>
-            <div class="form-group d-flex gap-3">
-                <!-- "Cancel" button that takes the user back to the inspection list -->
-                <button :disabled="saving" type="button" class="btn btn-danger" @click="cancelInspection()" aria-label="Cancel inspection">Cancel</button>
-                <!-- "Save inspection" button that saves the current inspection -->
-                <button :disabled="saving" class="btn btn-success" type="submit" aria-label="Save inspection">Save inspection</button>
-                <!-- "Complete inspection" button that marks the inspection as completed, only visible if the inspection is not already completed -->
-                <button :disabled="saving" type="button" v-if="!inspection.completion" class="btn btn-success" @click="completeInspection" aria-label="Complete inspection">Complete inspection</button>
-            </div>
-
-        </form>
-
-        <div v-else class="text-danger">
-            <!-- Display message if no inspection was found -->
-            <p>No inspection was found. Would you like to navigate back to the inspection overview? You can do so via the "Back to inspections" button.</p>
+      <!-- 🔧 Damage Section -->
+      <div class="form-group my-3 py-3">
+        <h2>
+          <button type="button" class="btn btn-secondary" @click="showDamage = !showDamage">
+            <ion-icon :icon="showDamage ? caretUpOutline : caretDownOutline" class="m-auto" />
+          </button>
+          <span class="ms-3">Damage</span>
+        </h2>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-primary" @click="addDamage">Add Damage</button>
         </div>
+        <transition name="fade">
+          <div v-if="showDamage" class="d-flex gap-3 flex-column mt-3">
+            <damage-component
+              v-for="(damage, index) in inspection.damage"
+              :key="index"
+              :damage="damage"
+              @destroy="removeDamage(index)"
+            />
+          </div>
+        </transition>
+      </div>
 
-        <div v-if="showToast" class="toast-container">
-            <!-- Toast message container -->
-            <div v-bind:class="{'show': showToast}" :class="'toast toast-' + toastType" aria-live="assertive">
-                <!-- Display toast message -->
-                {{ toastMessage }}
-            </div>
+      <!-- 🛠️ Maintenance Section -->
+      <div class="form-group my-3 py-3">
+        <h2>
+          <button type="button" class="btn btn-secondary" @click="showMaintenance = !showMaintenance">
+            <ion-icon :icon="showMaintenance ? caretUpOutline : caretDownOutline" class="m-auto" />
+          </button>
+          <span class="ms-3">Maintenance</span>
+        </h2>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-primary" @click="addMaintenance">Add Maintenance</button>
         </div>
-    </main>
+        <transition name="fade">
+          <div v-if="showMaintenance" class="d-flex gap-3 flex-column mt-3">
+            <maintenance-component
+              v-for="(maintenance, index) in inspection.maintenance"
+              :key="index"
+              :maintenance="maintenance"
+              @destroy="removeMaintenance(index)"
+            />
+          </div>
+        </transition>
+      </div>
+
+      <!-- 🔌 Installation Section -->
+      <div class="form-group my-3 py-3">
+        <h2>
+          <button type="button" class="btn btn-secondary" @click="showInstallation = !showInstallation">
+            <ion-icon :icon="showInstallation ? caretUpOutline : caretDownOutline" class="m-auto" />
+          </button>
+          <span class="ms-3">Installations</span>
+        </h2>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-primary" @click="addInstallation">Add Installation</button>
+        </div>
+        <transition name="fade">
+          <div v-if="showInstallation" class="d-flex gap-3 flex-column mt-3">
+            <installation-component
+              v-for="(installation, index) in inspection.installation"
+              :key="index"
+              :installation="installation"
+              @destroy="removeInstallation(index)"
+            />
+          </div>
+        </transition>
+      </div>
+
+      <!-- ✏️ Modifications Section -->
+      <div class="form-group my-3 py-3">
+        <h2>
+          <button type="button" class="btn btn-secondary" @click="showModification = !showModification">
+            <ion-icon :icon="showModification ? caretUpOutline : caretDownOutline" class="m-auto" />
+          </button>
+          <span class="ms-3">Modifications</span>
+        </h2>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-primary" @click="addModification">Add Modification</button>
+        </div>
+        <transition name="fade">
+          <div v-if="showModification" class="d-flex gap-3 flex-column mt-3">
+            <modification-component
+              v-for="(modification, index) in inspection.modifications"
+              :key="index"
+              :modification="modification"
+              @destroy="removeModification(index)"
+            />
+          </div>
+        </transition>
+      </div>
+
+      <!-- 💾 Action Buttons -->
+      <div class="form-group d-flex gap-3">
+        <button :disabled="saving" type="button" class="btn btn-danger" @click="cancelInspection">Cancel</button>
+        <button :disabled="saving" type="submit" class="btn btn-success">Save inspection</button>
+        <button v-if="!inspection.completion" :disabled="saving" type="button" class="btn btn-success" @click="completeInspection">Complete inspection</button>
+      </div>
+    </form>
+
+    <div v-else class="text-danger">
+      <p>No inspection was found. Use the "Back to inspections" button above to return.</p>
+    </div>
+
+    <div v-if="showToast" class="toast-container">
+      <div :class="['toast', 'toast-' + toastType, showToast ? 'show' : '']">
+        {{ toastMessage }}
+      </div>
+    </div>
+  </main>
 </template>
 <script setup>
 import { ref, reactive, onMounted, onBeforeMount } from 'vue';
@@ -179,10 +167,10 @@ onBeforeMount(async () => {
   inspectionId.value = store.getters.inspection;
 
   try {
-    const response = await axios.get(`https://api.jsonbin.io/v3/b/63c1a09815ab31599e35cf00/latest`, {
+    const response = await axios.get(`https://api.jsonbin.io/v3/b/683ff2528a456b7966a94a26`, {
       headers: {
         'Content-Type': 'application/json',
-        'X-Master-Key': '...'
+        'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q'
       }
     });
 
@@ -218,10 +206,10 @@ const saveInspection = async () => {
   try {
     saving.value = true;
 
-    const response = await axios.get(`https://api.jsonbin.io/v3/b/63c1a09815ab31599e35cf00/latest`, {
+    const response = await axios.get(`https://api.jsonbin.io/v3/b/683ff2528a456b7966a94a26/latest`, {
       headers: {
         'Content-Type': 'application/json',
-        'X-Master-Key': '...'
+        'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q'
       }
     });
 
@@ -232,12 +220,12 @@ const saveInspection = async () => {
     if (addressIndex !== -1 && inspectionIndex !== -1) {
       Object.assign(addresses[addressIndex].inspections[inspectionIndex], inspection);
 
-      const update = await axios.put(`https://api.jsonbin.io/v3/b/63c1a09815ab31599e35cf00`, {
+      const update = await axios.put(`https://api.jsonbin.io/v3/b/683ff2528a456b7966a94a26`, {
         addresses
       }, {
         headers: {
           'Content-Type': 'application/json',
-          'X-Master-Key': '...'
+          'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q'
         }
       });
 

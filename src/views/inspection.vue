@@ -134,6 +134,7 @@
             </div>
         </div>
     </main>
+</template>
 <script setup>
 import { ref, reactive, onMounted, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';

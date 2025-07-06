@@ -1,82 +1,42 @@
-// Import Bootstrap CSS and JS
-import "bootstrap/dist/css/bootstrap.min.css"
-import 'bootstrap/dist/js/bootstrap.min.js'
-import "bootstrap"
+// Import Bootstrap CSS en JS
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 // Import Ionic CSS
-import "@ionic/core/css/ionic.bundle.css"
+import '@ionic/core/css/ionic.bundle.css'
 
-// Import Ionic Vue, IonIcon and IonToast
-import { IonicVue, IonIcon, IonToast } from '@ionic/vue';
-
-// Import createApp function from Vue
+// Import Vue en essentials
 import { createApp } from 'vue'
+import { IonicVue, IonIcon, IonToast } from '@ionic/vue'
 
-// Import store
+import App from './App.vue'
+import router from './router'
 import store from './store/store.js'
 
-// Import App.vue and router
-import App from '@/App.vue'
-import router from './router'
-
-// Create the Vue app
+// App initialiseren
 const app = createApp(App)
-app.use(store)
+
+app
+  .use(IonicVue)
+  .use(router)
+  .use(IonToast)
+  .use(store)
+  .component('ion-icon', IonIcon)
+
 app.mount('#app')
 
-// Use Ionic Vue, router, IonIcon and IonToast
-app.use(IonicVue).use(router).use(IonIcon).component('ion-icon', IonIcon, {silent: true}).use(IonToast).use(store);
+// Arrow key navigatie (optioneel)
+document.addEventListener('keydown', event => {
+  const formElements = document.querySelectorAll("input, select, textarea, button, a[href]")
+  const currentIndex = [...formElements].findIndex(el => el === document.activeElement)
 
-// Mount the app to the element with id "app"
-app.mount('#app');
+  if (event.key === 'ArrowUp' && currentIndex > 0) {
+    event.preventDefault()
+    formElements[currentIndex - 1].focus()
+  }
 
-router.beforeEach((to, from, next) => {
-    // check if the user is not trying to access the login page and if the user is not logged in
-    if (to.name != 'login' && Object.keys(store.getters.user).length < 1) {
-        // redirect the user to the login page
-        next({ name: 'login' })
-    } else {
-        // check if the user is trying to access the login page and if the user is already logged in
-        if (to.name === 'login' && Object.keys(store.getters.user).length > 0 && store.getters.user.id != null && store.getters.user.id != undefined) {
-            // redirect the user to the home page
-            next({name: 'home'});
-        } else {
-            // continue to the next route
-            next();
-        }
-    }
-})
-
-document.addEventListener("keydown", event => {
-    // Select all form elements
-    const formElements = document.querySelectorAll("input, select, textarea, button, a[href]");
-    let currentIndex = 0;
-
-    // Find index of focused
-    for (let i = 0; i < formElements.length; i++) {
-        if (document.activeElement === formElements[i]) {
-            currentIndex = i;
-            break;
-        }
-    }
-
-    // Watch which key is pressed
-    switch(event.key) {
-        case "ArrowUp":
-            // Prevent the default behavior of the arrow key (scrolling the page)
-            event.preventDefault();
-            if (currentIndex > 0) {
-                // Move focus to the previous form element
-                formElements[currentIndex - 1].focus();
-            }
-            break;
-        case "ArrowDown":
-            // Prevent the default behavior of the arrow key (scrolling the page)
-            event.preventDefault();
-            if (currentIndex < formElements.length - 1) {
-                // Move focus to the next form element
-                formElements[currentIndex + 1].focus();
-            }
-            break;
-    }
+  if (event.key === 'ArrowDown' && currentIndex < formElements.length - 1) {
+    event.preventDefault()
+    formElements[currentIndex + 1].focus()
+  }
 })

@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "realestatecare",
   "version": "0.0.0",
   "private": true,
@@ -16,6 +17,7 @@
     "dotenv": "^16.0.3",
     "file-saver": "^2.0.5",
     "file-upload-with-preview": "^5.0.8",
+    "firebase": "^11.10.0",
     "ionicons": "^6.0.4",
     "jquery": "^3.6.2",
     "vue": "^3.2.45",

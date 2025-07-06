@@ -7,7 +7,7 @@
             "inspections": [
                 {
                     "id": 102,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": false,
                     "inspector": 2,
                     "damage": [],
@@ -19,7 +19,7 @@
                 },
                 {
                     "id": 103,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 3,
                     "damage": [
@@ -27,7 +27,7 @@
                         "location": "Bedroom",
                         "new": false,
                         "type": "accidental",
-                        "date": "2025-06-04",
+                        "date": "2025-07-01",
                         "acuteAction": false,
                         "description": "Water damage",
                         "photos": []
@@ -41,7 +41,7 @@
                 },
                 {
                     "id": 104,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 4,
                     "damage": [],
@@ -61,7 +61,7 @@
                 },
                 {
                     "id": 105,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": false,
                     "inspector": 5,
                     "damage": [],
@@ -83,7 +83,7 @@
                 },
                 {
                     "id": 106,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 6,
                     "damage": [],
@@ -93,7 +93,7 @@
                         {
                             "location": "Garage",
                             "type": "electrical",
-                            "date": "2025-06-04",
+                            "date": "2025-07-01",
                             "description": "Rewiring",
                             "photos": []
                         }
@@ -110,7 +110,7 @@
             "inspections": [
                 {
                     "id": 112,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 2,
                     "damage": [
@@ -118,7 +118,7 @@
                         "location": "Driveway",
                         "new": true,
                         "type": "vehicular",
-                        "date": "2025-06-04",
+                        "date": "2025-07-01",
                         "acuteAction": true,
                         "description": "Oil leak",
                         "photos": []
@@ -130,7 +130,7 @@
                 },
                 {
                     "id": 113,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": false,
                     "inspector": 3,
                     "damage": [],
@@ -142,7 +142,7 @@
                 },
                 {
                     "id": 114,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 4,
                     "damage": [
@@ -150,7 +150,7 @@
                             "location": "Porch",
                             "new": false,
                             "type": "accidental",
-                            "date": "2025-06-04",
+                            "date": "2025-07-01",
                             "acuteAction": false,
                             "description": "Broken step",
                             "photos": []
@@ -164,7 +164,7 @@
                 },
                 {
                     "id": 115,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 5,
                     "damage": [],
@@ -184,7 +184,7 @@
                 },
                 {
                     "id": 116,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": false,
                     "inspector": 6,
                     "damage": [],
@@ -213,7 +213,7 @@
             "inspections": [
                 {
                     "id": 121,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 2,
                     "damage": [
@@ -221,7 +221,7 @@
                             "location": "Living Room",
                             "new": true,
                             "type": "fire",
-                            "date": "2025-06-04",
+                            "date": "2025-07-01",
                             "acuteAction": true,
                             "description": "Burn marks",
                             "photos": []
@@ -235,7 +235,7 @@
                 },
                 {
                     "id": 122,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": false,
                     "inspector": 2,
                     "damage": [],
@@ -247,7 +247,7 @@
                 },
                 {
                     "id": 123,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 3,
                     "damage": [
@@ -255,7 +255,7 @@
                             "location": "Bathroom",
                             "new": false,
                             "type": "water",
-                            "date": "2025-06-04",
+                            "date": "2025-07-01",
                             "acuteAction": false,
                             "description": "Mold",
                             "photos": []
@@ -269,7 +269,7 @@
                 },
                 {
                     "id": 124,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 4,
                     "damage": [],
@@ -289,7 +289,7 @@
                 },
                 {
                     "id": 125,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": false,
                     "inspector": 5,
                     "damage": [],
@@ -318,7 +318,7 @@
             "inspections": [
                 {
                     "id": 131,
-                    "date": "2025-06-06",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 1,
                     "damage": [
@@ -326,7 +326,7 @@
                         "location": "Kitchen",
                         "new": true,
                         "type": "willful",
-                        "date": "2025-06-06",
+                        "date": "2025-07-01",
                         "acuteAction": true,
                         "description": "Broken window",
                         "photos": []
@@ -338,7 +338,7 @@
                   },
                   {
                     "id": 132,
-                    "date": "2025-06-06",
+                    "date": "2025-07-01",
                     "completion": false,
                     "inspector": 2,
                     "damage": [],
@@ -350,7 +350,7 @@
                   },
                   {
                     "id": 133,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 3,
                     "damage": [
@@ -358,7 +358,7 @@
                         "location": "Living Room",
                         "new": false,
                         "type": "vandalism",
-                        "date": "2025-06-04",
+                        "date": "2025-07-01",
                         "acuteAction": false,
                         "description": "Broken furniture",
                         "photos": []
@@ -372,7 +372,7 @@
                   },
                   {
                     "id": 134,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 4,
                     "damage": [],
@@ -392,7 +392,7 @@
                   },
                   {
                     "id": 135,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": false,
                     "inspector": 5,
                     "damage": [],
@@ -421,7 +421,7 @@
             "inspections": [
                 {
                     "id": 141,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 1,
                     "damage": [
@@ -429,7 +429,7 @@
                         "location": "Kitchen",
                         "new": true,
                         "type": "willful",
-                        "date": "2025-06-04",
+                        "date": "2025-07-01",
                         "acuteAction": true,
                         "description": "Broken window",
                         "photos": []
@@ -441,7 +441,7 @@
                   },
                   {
                     "id": 142,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": false,
                     "inspector": 2,
                     "damage": [],
@@ -453,7 +453,7 @@
                   },
                   {
                     "id": 143,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 3,
                     "damage": [
@@ -461,7 +461,7 @@
                         "location": "Living Room",
                         "new": false,
                         "type": "vandalism",
-                        "date": "2025-06-04",
+                        "date": "2025-07-01",
                         "acuteAction": false,
                         "description": "Broken furniture",
                         "photos": []
@@ -475,7 +475,7 @@
                   },
                   {
                     "id": 144,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 4,
                     "damage": [],
@@ -495,7 +495,7 @@
                   },
                   {
                     "id": 145,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": false,
                     "inspector": 5,
                     "damage": [],
@@ -524,7 +524,7 @@
             "inspections": [
                 {
                     "id": 151,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 1,
                     "damage": [
@@ -532,7 +532,7 @@
                         "location": "Kitchen",
                         "new": true,
                         "type": "willful",
-                        "date": "2025-06-04",
+                        "date": "2025-07-01",
                         "acuteAction": true,
                         "description": "Broken window",
                         "photos": []
@@ -544,7 +544,7 @@
                   },
                   {
                     "id": 152,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": false,
                     "inspector": 2,
                     "damage": [],
@@ -556,7 +556,7 @@
                   },
                   {
                     "id": 153,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 3,
                     "damage": [
@@ -564,7 +564,7 @@
                         "location": "Living Room",
                         "new": false,
                         "type": "vandalism",
-                        "date": "2025-06-04",
+                        "date": "2025-07-01",
                         "acuteAction": false,
                         "description": "Broken furniture",
                         "photos": []
@@ -578,7 +578,7 @@
                   },
                   {
                     "id": 154,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": true,
                     "inspector": 4,
                     "damage": [],
@@ -598,7 +598,7 @@
                   },
                   {
                     "id": 154,
-                    "date": "2025-06-04",
+                    "date": "2025-07-01",
                     "completion": false,
                     "inspector": 5,
                     "damage": [],

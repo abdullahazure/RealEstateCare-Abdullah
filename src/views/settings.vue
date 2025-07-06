@@ -1,97 +1,28 @@
-<template>
-    <main class="container">
-        <div class="row">
-            <div class="col-2-sm"></div>
-            <!-- Profile settings container -->
-            <div class="col-sm">
-                <h1>Profile settings</h1>
-                <!-- Profile form -->
-                <form v-on:submit.prevent="updateAccountDetails" id="accountdetails" name="accountdetails" method="post">
-                    <div class="mb-3">
-                        <label for="firstname" class="form-label" aria-label="Firstname">Firstname</label>
-                        <input type="firstname" class="form-control" id="firstname" name="firstname" placeholder="Abdullah" v-model="firstname" aria-describedby="firstname-description">
-                        <small id="firstname-description" class="form-text text-muted">Enter your first name</small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="lastname" class="form-label" aria-label="Lastname">Lastname</label>
-                        <input type="lastname" class="form-control" id="lastname" name="lastname" placeholder="Fa" v-model="lastname" aria-describedby="lastname-description">
-                        <small id="lastname-description" class="form-text text-muted">Enter your last name</small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="newpassword" class="form-label" aria-label="New password">New password</label>
-                        <input type="newpassword" class="form-control" id="newpassword" name="newpassword" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" v-model="newpassword" aria-describedby="newpassword-description">
-                        <small id="newpassword-description" class="form-text text-muted">Enter your new password</small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="newpassword" class="form-label" aria-label="Confirm new password">Confirm new password</label>
-                        <input type="newpassword" class="form-control" id="newpassword" name="newpassword" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" v-model="confirmnewpassword" aria-describedby="confirmnewpassword-description">
-                        <small id="confirmnewpassword-description" class="form-text text-muted">Confirm your new password</small>
-                    </div>
-                    <div>
-                        <input :disabled="saving" type="submit" value="Change account" class="btn btn-primary" aria-label="Change account">
-                    </div>
-                </form>
-
-            </div>
-            <div class="col-2-sm"></div>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-2-sm"></div>
-            <!-- Application settings for user container -->
-            <div class="col-sm">
-                <h1>Application settings</h1>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch" v-model="settings.darkTheme" aria-label="Dark mode switch">
-                    <label class="form-check-label" for="darkModeSwitch">Dark modus</label>
-                </div>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="notificationsSwitch" v-model="settings.notifications" aria-label="Notifications switch">
-                    <label class="form-check-label" for="notificationsSwitch">Notifications</label>
-                </div>
-                <div class="form-check form-switch mb-3">
-                    <input class="form-check-input" type="checkbox" role="switch" id="soundSwitch" v-model="settings.sounds" aria-label="Sound switch">
-                    <label class="form-check-label" for="soundSwitch">Sounds</label>
-                </div>
-                <!-- Update application settings for user -->
-                <button :disabled="saving" class="btn btn-primary" @click="updateSettings()" aria-label="Save changes">Save changes</button>
-            </div>
-            <div class="col-2-sm"></div>
-        </div>
-        <button class="btn btn-danger mt-3" :disabled="saving" @click="logout()" aria-label="Logout">Logout</button>
-
-        <div v-if="showToast" class="toast-container">
-            <div v-bind:class="{'show': showToast}" :class="'toast toast-' + toastType">
-                {{ toastMessage }}
-            </div>
-        </div>
-    </main>
-</template>
-
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
-import store from '../store/store.js';
+import { useStore } from 'vuex';
+
 import inspections from '@/data/inspections.json?url';
 import users from '@/data/users.json?url';
 
 const router = useRouter();
-const user = store.getters.user;
+const store = useStore();
 
-const settings = ref(user.settings ?? false);
-const firstname = ref(user.firstName ?? '');
-const lastname = ref(user.lastName ?? '');
-const password = ref('');
+// Reactieve data
+const settings = ref(store.getters.user.settings !== undefined ? store.getters.user.settings : {});
+const firstname = ref(store.getters.user.firstName ?? '');
+const lastname = ref(store.getters.user.lastName ?? '');
 const newpassword = ref('');
 const confirmnewpassword = ref('');
-
 const showToast = ref(false);
 const toastMessage = ref('');
 const toastType = ref('');
 const saving = ref(false);
 
-const showToastMessage = (type, message) => {
+// Toast helper
+function showToastMsg(type, message) {
   toastType.value = type;
   toastMessage.value = message;
   showToast.value = true;
@@ -100,114 +31,126 @@ const showToastMessage = (type, message) => {
     toastType.value = '';
     toastMessage.value = '';
   }, 3000);
-};
+}
 
-const logout = async () => {
+// Uitloggen
+async function logout() {
   saving.value = true;
   try {
-    const [jsonInspections, jsonUsers] = await Promise.all([
+    const [inspectionsRes, usersRes] = await Promise.all([
       axios.get(inspections),
-      axios.get(users),
+      axios.get(users)
     ]);
 
-    const headers = {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q',
-      },
-    };
-
-    await Promise.all([
-      axios.put('https://api.jsonbin.io/v3/b/683f10408a456b7966a90cb8', jsonInspections.data, headers),
-      axios.put('https://api.jsonbin.io/v3/b/683f10408a456b7966a90cb8', jsonUsers.data, headers),
-    ]);
-  } catch (err) {
-    console.error(err);
+    if (inspectionsRes.status === 200 && usersRes.status === 200) {
+      await Promise.all([
+        axios.put('https://api.jsonbin.io/v3/b/683f10408a456b7966a90cb8', inspectionsRes.data, {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q'
+          }
+        }),
+        axios.put('https://api.jsonbin.io/v3/b/683f10408a456b7966a90cb8', usersRes.data, {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q'
+          }
+        })
+      ]);
+    }
+  } catch (error) {
+    console.error('Logout error:', error);
   } finally {
+    saving.value = false;
     store.commit('setUser', {});
     router.go({ name: 'home' });
-    saving.value = false;
   }
-};
+}
 
-const updateSettings = async () => {
+// Instellingen opslaan
+async function updateSettings() {
   saving.value = true;
+  const user = store.getters.user;
+  if (!user) {
+    showToastMsg('error', 'Niet ingelogd');
+    saving.value = false;
+    return;
+  }
+
   try {
     const response = await axios.get('https://api.jsonbin.io/v3/b/683f10408a456b7966a90cb8/latest', {
       headers: {
         'Content-Type': 'application/json',
-        'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q',
-      },
+        'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q'
+      }
     });
 
     const jsonData = response.data.record;
-    const idx = jsonData.findIndex((u) => u.id === user.id);
-    if (idx === -1) {
-      showToastMessage('error', 'User is not found in the API!');
+    const userIndex = jsonData.findIndex(u => u.id === user.id);
+    if (userIndex === -1) {
+      showToastMsg('error', 'Gebruiker niet gevonden');
       saving.value = false;
       return;
     }
 
-    jsonData[idx].settings = settings.value;
+    jsonData[userIndex].settings = settings.value;
 
     const update = await axios.put('https://api.jsonbin.io/v3/b/683f10408a456b7966a90cb8', jsonData, {
       headers: {
         'Content-Type': 'application/json',
-        'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q',
-      },
+        'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q'
+      }
     });
 
     if (update.status === 200) {
-      const updatedUser = { ...jsonData[idx] };
+      const updatedUser = { ...jsonData[userIndex] };
       delete updatedUser.password;
       store.commit('setUser', updatedUser);
-      showToastMessage('success', 'Settings saved successfully');
-    } else {
-      throw new Error('Failed to update user');
+      showToastMsg('success', 'Instellingen opgeslagen');
     }
+
   } catch (err) {
     console.error(err);
-    const msg = err.code !== 'ERR_NETWORK'
-      ? 'There has been an error occurred, contact the developer!'
-      : 'You don’t have wifi!';
-    showToastMessage('error', msg);
-  } finally {
-    saving.value = false;
+    showToastMsg('error', 'Opslaan mislukt');
   }
-};
 
-const updateAccountDetails = async () => {
+  saving.value = false;
+}
+
+// Accountgegevens opslaan
+async function updateAccountDetails() {
+  const user = store.getters.user;
+  if (!user) {
+    showToastMsg('error', 'Geen gebruiker ingelogd');
+    return;
+  }
+
   saving.value = true;
-  try {
-    if (!user) {
-      showToastMessage('error', 'No user logged in!');
-      saving.value = false;
-      return;
-    }
 
+  try {
     const response = await axios.get('https://api.jsonbin.io/v3/b/683f10408a456b7966a90cb8/latest', {
       headers: {
         'Content-Type': 'application/json',
-        'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q',
-      },
+        'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q'
+      }
     });
 
     const jsonData = response.data.record;
-    const idx = jsonData.findIndex((u) => u.id === user.id);
-    if (idx === -1) {
-      showToastMessage('error', 'User not found!');
+    const userIndex = jsonData.findIndex(u => u.id === user.id);
+    if (userIndex === -1) {
+      showToastMsg('error', 'Gebruiker niet gevonden');
       saving.value = false;
       return;
     }
 
-    if (firstname.value) jsonData[idx].firstName = firstname.value;
-    if (lastname.value) jsonData[idx].lastName = lastname.value;
+    if (firstname.value) jsonData[userIndex].firstName = firstname.value;
+    if (lastname.value) jsonData[userIndex].lastName = lastname.value;
 
     if (newpassword.value) {
       if (newpassword.value === confirmnewpassword.value) {
-        jsonData[idx].password = newpassword.value;
+        jsonData[userIndex].password = newpassword.value;
       } else {
-        showToastMessage('error', 'Passwords do not match!');
+        showToastMsg('error', 'Wachtwoorden komen niet overeen');
         saving.value = false;
         return;
       }
@@ -216,27 +159,105 @@ const updateAccountDetails = async () => {
     const update = await axios.put('https://api.jsonbin.io/v3/b/683f10408a456b7966a90cb8', jsonData, {
       headers: {
         'Content-Type': 'application/json',
-        'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q',
-      },
+        'X-Master-Key': '$2a$10$0f5YYc/h5v90cnRnqPCRNO9gVNlilQdyogyR7rKTPbseXPdI5Co3q'
+      }
     });
 
     if (update.status === 200) {
-      const updatedUser = { ...jsonData[idx] };
+      const updatedUser = { ...jsonData[userIndex] };
       delete updatedUser.password;
       store.commit('setUser', updatedUser);
       newpassword.value = '';
       confirmnewpassword.value = '';
-      showToastMessage('success', 'Account updated successfully');
-    } else {
-      showToastMessage('error', 'Failed to update user');
+      showToastMsg('success', 'Account bijgewerkt');
     }
+
   } catch (err) {
-    const msg = err.code !== 'ERR_NETWORK'
-      ? 'There has been an error occurred, contact the developer!'
-      : 'You don’t have wifi!';
-    showToastMessage('error', msg);
-  } finally {
-    saving.value = false;
+    console.error(err);
+    showToastMsg('error', 'Bijwerken mislukt');
   }
-};
+
+  saving.value = false;
+}
 </script>
+
+<template>
+  <main class="container">
+    <div class="row">
+      <div class="col-sm offset-sm-2">
+<div class="text-start mb-3">
+        <router-link :to="{ name: 'home' }" class="btn btn-danger" aria-label="Go back">
+          Go back
+        </router-link>
+</div>
+        <h1>Profile settings</h1>
+        <form @submit.prevent="updateAccountDetails">
+          <div class="mb-3">
+            <label for="firstname" class="form-label">Firstname</label>
+            <input type="text" class="form-control" id="firstname" placeholder="Abdullah" v-model="firstname" />
+          </div>
+
+          <div class="mb-3">
+            <label for="lastname" class="form-label">Lastname</label>
+            <input type="text" class="form-control" id="lastname" placeholder="fa" v-model="lastname" />
+          </div>
+
+          <div class="mb-3">
+            <label for="newpassword" class="form-label">New password</label>
+            <input type="password" class="form-control" id="newpassword" placeholder="******" v-model="newpassword" />
+          </div>
+
+          <div class="mb-3">
+            <label for="confirmnewpassword" class="form-label">Confirm new password</label>
+            <input type="password" class="form-control" id="confirmnewpassword" placeholder="******" v-model="confirmnewpassword" />
+          </div>
+
+          <input :disabled="saving" type="submit" class="btn btn-primary" value="Change account" />
+        </form>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- APPLICATIE INSTELLINGEN -->
+    <div class="row">
+      <div class="col-sm offset-sm-2">
+        <h1>Application settings</h1>
+
+        <div class="form-check form-switch">
+          <input type="checkbox" class="form-check-input" id="darkModeSwitch" v-model="settings.darkTheme" />
+          <label class="form-check-label" for="darkModeSwitch">Dark mode</label>
+        </div>
+
+        <div class="form-check form-switch">
+          <input type="checkbox" class="form-check-input" id="notificationsSwitch" v-model="settings.notifications" />
+          <label class="form-check-label" for="notificationsSwitch">Notifications</label>
+        </div>
+
+        <div class="form-check form-switch mb-3">
+          <input type="checkbox" class="form-check-input" id="soundSwitch" v-model="settings.sounds" />
+          <label class="form-check-label" for="soundSwitch">Sounds</label>
+        </div>
+
+        <button :disabled="saving" class="btn btn-primary" @click="updateSettings">Save changes</button>
+      </div>
+    </div>
+
+    <!-- UITLOGGEN -->
+    <div class="row">
+      <div class="col-sm offset-sm-2">
+        <button class="btn btn-danger mt-3" :disabled="saving" @click="logout">Logout</button>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div v-if="showToast" class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div class="toast show" :class="'toast-' + toastType" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+          {{ toastMessage }}
+        </div>
+      </div>
+    </div>
+  </main>
+</template>
+

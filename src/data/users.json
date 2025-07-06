@@ -1,7 +1,7 @@
 [
     {
         "email": "abdullahfa@realestatecare.com",
-        "password": "admin",
+        "password": "admin12",
         "id": 2,
         "firstName": "Abdullah",
         "lastName": "Fa",
@@ -13,13 +13,13 @@
     },
 
     {
-        "email": "abdullahfa1@realestatecare.com",
-        "password": "admin1",
+        "email": "loi@realestatecare.com",
+        "password": "admin123",
         "id": 1,
-        "firstName": "Abdullah",
-        "lastName": "Fa",
+        "firstName": "loi",
+        "lastName": "loi",
         "settings": {
-            "darkTheme": false,
+            "darkTheme": true,
             "notifications": false,
             "sounds": true
         }

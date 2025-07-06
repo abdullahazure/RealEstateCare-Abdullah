@@ -1,5 +1,11 @@
 <template>
     <main class="container" aria-label="Getting Started">
+            <router-link
+                :to="{ name: 'home' }"
+                class="btn btn-sm btn-danger"
+                aria-label="Go Back">
+                Go back
+            </router-link>
         <h2 class="my-3" aria-label="Getting Started">Getting Started</h2>
         <ul class="list-group">
             <li class="list-group-item" aria-label="Log in with your provided email and password.">Log in with your provided email and password.</li>

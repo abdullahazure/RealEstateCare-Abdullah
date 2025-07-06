@@ -9,27 +9,12 @@ import '@ionic/core/css/ionic.bundle.css'
 import { createApp } from 'vue'
 import { IonicVue, IonIcon, IonToast } from '@ionic/vue'
 
-<<<<<<< Updated upstream
-// Import store
-import store from './store/store.js'
-
-// Import App.vue and router
-import App from '@/App.vue'
-=======
 import App from './App.vue'
->>>>>>> Stashed changes
 import router from './router'
 import store from './store/store.js'
 
-<<<<<<< Updated upstream
-// Create the Vue app
-const app = createApp(App)
-app.use(store)
-app.mount('#app')
-=======
 // App initialiseren
 const app = createApp(App)
->>>>>>> Stashed changes
 
 app
   .use(IonicVue)

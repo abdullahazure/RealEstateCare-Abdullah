@@ -17,6 +17,9 @@ Login gaat via firebase
 
 De accounts in dit voorbeeld zijn volledig fictief. Ze zijn speciaal gemaakt om de functionaliteit te laten zien en verwijzen niet naar echte personen of bedrijven. 
 
+## Login via mail 
+Alles werkt zoals bedoeld, de e-mail wordt verstuurd, alleen het 
+
 ### Data
 De API-koppelingen met betrekking tot adresinformatie worden uitgevoerd via:
 https://jsonbin.io/app/bins

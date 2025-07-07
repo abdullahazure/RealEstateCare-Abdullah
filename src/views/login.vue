@@ -3,6 +3,7 @@
     <div class="row mt-5">
       <div class="col-sm"></div>
       <div class="col-sm">
+        <!-- Loginformulier -->
         <form @submit.prevent="loginFirebase" id="login" name="login">
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
@@ -28,10 +29,20 @@
               required
             />
           </div>
-          <button type="submit" class="btn btn-primary">Login</button>
+
+          <!-- 🟩 Login & Mail-link -->
+          <div class="d-flex gap-3 mt-3">
+            <button type="submit" class="btn btn-success">Login</button>
+            <button @click="sendMagicLink" type="button" class="btn btn-warning d-flex align-items-center gap-2">
+              <i class="bi bi-envelope-fill"></i>
+              <span>Inloggen per Mail</span>
+            </button>
+          </div>
         </form>
 
+        <!-- Fout- of succesmeldingen -->
         <p v-if="errorMsg" class="text-danger mt-3">{{ errorMsg }}</p>
+        <p v-if="infoMsg" class="text-info mt-2">{{ infoMsg }}</p>
       </div>
       <div class="col-sm"></div>
     </div>
@@ -39,10 +50,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import {
+  signInWithEmailAndPassword,
+  sendSignInLinkToEmail,
+
+} from 'firebase/auth'
 import { auth } from '../firebase.js'
 import axios from 'axios'
 import store from '../store/store.js'
@@ -50,6 +65,7 @@ import store from '../store/store.js'
 const email = ref('')
 const password = ref('')
 const errorMsg = ref('')
+const infoMsg = ref('')
 const toastMessage = ref('')
 const toastType = ref('')
 const showToast = ref(false)
@@ -57,7 +73,7 @@ const showToast = ref(false)
 const router = useRouter()
 const vuexStore = useStore()
 
-// Firebase login
+// Login via Firebase
 async function loginFirebase() {
   if (!email.value || !password.value) {
     errorMsg.value = 'Vul je e-mailadres en wachtwoord in.'
@@ -65,7 +81,11 @@ async function loginFirebase() {
   }
 
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email.value.trim(), password.value.trim())
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email.value.trim(),
+      password.value.trim()
+    )
     const user = userCredential.user
 
     const userMap = {
@@ -96,11 +116,32 @@ async function loginFirebase() {
   }
 }
 
+async function sendMagicLink() {
+  if (!email.value) {
+    errorMsg.value = 'Vul eerst je e-mailadres in.'
+    return
+  }
+
+  try {
+    await sendSignInLinkToEmail(auth, email.value.trim(), {
+      url: window.location.origin + '/login',
+      handleCodeInApp: true
+    })
+
+    localStorage.setItem('emailForSignIn', email.value.trim())
+    infoMsg.value = `Er is een login-link gestuurd naar ${email.value.trim()}`
+    errorMsg.value = ''
+  } catch (err) {
+    console.error('Fout bij versturen mail-link:', err)
+    errorMsg.value = 'Kon login-link niet versturen.'
+  }
+}
+
 const showErrorToast = (message) => {
   toastType.value = 'error'
   toastMessage.value = message
   showToast.value = true
-  setTimeout(() => (showToast.value = false), 3000)
+    setTimeout(() => (showToast.value = false), 3000)
 }
 
 const loginRoute = async () => {
@@ -117,7 +158,9 @@ const loginRoute = async () => {
     }
 
     const users = response.data.record
-    const user = users.find(u => u.email === email.value && u.password === password.value)
+    const user = users.find(
+      u => u.email === email.value && u.password === password.value
+    )
 
     if (user) {
       const { password, ...userData } = user
@@ -128,10 +171,10 @@ const loginRoute = async () => {
     }
   } catch (err) {
     console.error(err)
-    const message = err.code !== 'ERR_NETWORK'
-      ? 'Er is iets misgegaan tijdens het inloggen. Neem contact op met de ontwikkelaar.'
-      : 'Netwerkfout: controleer je internetverbinding.'
-
+    const message =
+      err.code !== 'ERR_NETWORK'
+        ? 'Er is iets misgegaan tijdens het inloggen. Neem contact op met de ontwikkelaar.'
+        : 'Netwerkfout: controleer je internetverbinding.'
     showErrorToast(message)
   }
 }

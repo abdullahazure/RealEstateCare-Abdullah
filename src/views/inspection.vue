@@ -12,7 +12,7 @@
         </select>
       </div>
 
-      <!-- 🔧 Damage Section -->
+      <!-- Damage Section -->
       <div class="form-group my-3 py-3">
         <h2>
           <button type="button" class="btn btn-secondary" @click="showDamage = !showDamage">
@@ -35,7 +35,7 @@
         </transition>
       </div>
 
-      <!-- 🛠️ Maintenance Section -->
+      <!-- Maintenance Section -->
       <div class="form-group my-3 py-3">
         <h2>
           <button type="button" class="btn btn-secondary" @click="showMaintenance = !showMaintenance">
@@ -58,7 +58,7 @@
         </transition>
       </div>
 
-      <!-- 🔌 Installation Section -->
+      <!-- Installation Section -->
       <div class="form-group my-3 py-3">
         <h2>
           <button type="button" class="btn btn-secondary" @click="showInstallation = !showInstallation">
@@ -81,7 +81,7 @@
         </transition>
       </div>
 
-      <!-- ✏️ Modifications Section -->
+      <!-- Modifications Section -->
       <div class="form-group my-3 py-3">
         <h2>
           <button type="button" class="btn btn-secondary" @click="showModification = !showModification">
@@ -104,7 +104,7 @@
         </transition>
       </div>
 
-      <!-- 💾 Action Buttons -->
+      <!-- Action Buttons -->
       <div class="form-group d-flex gap-3">
         <button :disabled="saving" type="button" class="btn btn-danger" @click="cancelInspection">Cancel</button>
         <button :disabled="saving" type="submit" class="btn btn-success">Save inspection</button>
@@ -188,7 +188,7 @@ onBeforeMount(async () => {
   }
 });
 
-// ✅ LOGICA FUNCTIES
+// LOGICA FUNCTIES
 
 const addDamage = () => inspection.damage.push({});
 const removeDamage = (index) => inspection.damage.splice(index, 1);

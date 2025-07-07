@@ -1,44 +1,24 @@
-### Installation
-<<<<<<< Updated upstream
-1. Clone the repository from Github (https://github.com/abdullahazure/RealEstateCare-Abdullah) with `git clone <>``.
-2. Install the required packages with `npm install`.
-3. Start the development server with `npm run dev`
+### Instalatie
+1. Clone deze repository van Github https://github.com/abdullahazure/RealEstateCare-Abdullah met `git clone <>``.
+2. `npm install`
+3. `npm run dev`
 
-### Firebase 
-1. npm run build in VScode terminal 
-2. firebase deploy 
-
-https://realestatecare-abdullah.web.app
-=======
-1. Clone the repository from Github https://github.com/abdullahazure/RealEstateCare-Abdullah with `git clone <>``.
-2. Install the required packages with `npm install`.
-3. Start the development server with `npm run dev`
-
-4. Visit direct the application: 
-https://realestatecare-abdullah.web.app/
->>>>>>> Stashed changes
+## Hoe kan je de applicatie benaderen via web?
+1. Doe 'npm run build' in vscode terminal
+2. https://realestatecare-abdullah.web.app/
 
 ### Login
-Login is via firebase 
+Login gaat via firebase 
 
-Below is a list of two user accounts that can be used to log in. Each account is identified by a unique email address and password. These accounts are provided solely for demonstration purposes:
+| Email                         | Wachtwoord |
+|-------------------------------|------------|
+| abdullahfa@realestatecare.com | admin12    |
+| loi@realestatecare.com        | admin123   |
 
-| Email                         | Password |
-|-------------------------------|----------|
-| abdullahfa@realestatecare.com | admin12  |
-| loi@realestatecare.com        | admin123 |
-
-The user accounts presented in this example are entirely fictional. They have been created strictly for the purpose of demonstrating functionality, and do not correspond to any actual individuals or entities. Any resemblance to real persons, living or dead, is purely coincidental. Please ensure that any data used in real applications adheres to privacy standards and ethical guidelines.
+De accounts in dit voorbeeld zijn volledig fictief. Ze zijn speciaal gemaakt om de functionaliteit te laten zien en verwijzen niet naar echte personen of bedrijven. 
 
 ### Data
-<<<<<<< Updated upstream
-API connections related to user and address information are routed through:
-https://jsonbin.io/app/bins
-
-### Store 
-Making us of Composition API
-=======
-API connections related to address information are routed through:
+De API-koppelingen met betrekking tot adresinformatie worden uitgevoerd via:
 https://jsonbin.io/app/bins
 
 ### Profile settings
@@ -56,7 +36,7 @@ Voor het opslaan en ophalen van inspectiedata wordt gebruikgemaakt van JSONBin. 
 
 Wachtwoorden zijn dus niet zichtbaar of toegankelijk in de frontend, en externe dataopslag wordt alleen ingezet voor niet-gevoelige inhoud.
 
-## Usability (op basis van Jakob Nielsen’s heuristieken)
+## Usability 
 Bij het ontwerpen van de gebruikersinterface heb ik geprobeerd om de principes van gebruiksvriendelijkheid toe te passen waar relevant:
 
 De app geeft directe feedback via toastmeldingen, bijvoorbeeld bij loginfouten of succesvolle offline synchronisatie. 
@@ -67,7 +47,7 @@ In het dashboard wordt gebruikgemaakt van iconen én tekstlabels, wat de herkenb
 
 Deze keuzes zorgen voor een consistente, vloeiende ervaring, ook voor minder technisch onderlegde gebruikers.
 
-## Accessibility (WCAG 2.1)
+## Accessibility
 Toegankelijkheid is waar mogelijk meegenomen in het ontwerp van de applicatie:
 Elk invoerveld in het loginformulier heeft een bijbehorende <label> gekoppeld via id
 
@@ -94,9 +74,9 @@ Codekwaliteit wordt consistent gehouden dankzij een vaste structuur, duidelijke 
 ### Relfectie:
 Mijn oorspronkelijke plan voor deze applicatie was simpel: 
 alles bouwen met de Composition API van Vue 3. Ik wilde echt duiken in die modernere manier van werken, en voelde dat het me zou helpen om code beter te organiseren en her te gebruiken. Ik zag het helemaal zitten.
-Na twee weken hard zwoegen kwam ik erachter dat het toch niet zo'n goed idee was. De applicatie begon kuren te vertonen, en ik raakte compleet het overzicht kwijt van wat er precies fout ging. Het was alsof ik verdwaald was in een doolhof van code.
+Na twee weken hard zwoegen kwam ik erachter dat het toch niet zo'n goed idee was. De applicatie begon kuren te vertonen, en ik raakte compleet het overzicht kwijt van wat er precies fout ging. Het was alsof ik verdwaald was in een doolhof van code. Gezien mijn ervaring lijkt het me ook logisch. 
 
-Toen heb ik de knoop doorgehakt: terug naar de basis. Ik heb besloten om alleen een paar componenten om te zetten naar de Composition API, en de rest gewoon met de vertrouwde Options API te laten staan. Het voelde als een nederlaag, maar het was wel de enige manier om de applicatie weer stabiel te krijgen.
+Toen heb ik de knoop doorgehakt met een beetje hulp van AI: terug naar de basis. Ik heb besloten om alleen een paar componenten om te zetten naar de Composition API, en de rest gewoon met de vertrouwde Options API te laten staan. Het voelde als een nederlaag, maar het was wel de enige manier om de applicatie weer stabiel te krijgen.
 Tijdens dit project heb ik ook een pijnlijke les geleerd over versiebeheer. Ik had in één keer zó veel veranderingen doorgevoerd (ik denk wel meer dan 300 aanpassingen!), dat het onmogelijk was om terug te keren naar een werkende versie toen de boel crashte. Omdat ik te weinig tussentijdse commits had gemaakt, ben ik twee keer helemaal opnieuw begonnen. Echt balen!
 Het was een frustrerende ervaring, maar ik heb er wel een hoop van geleerd:
 
@@ -105,4 +85,3 @@ Het was een frustrerende ervaring, maar ik heb er wel een hoop van geleerd:
 - En wees realistisch: wat werkt wél, en wat is te ambitieus voor nu?
 
 Deze ervaring heeft me niet alleen technisch verder geholpen, maar ook geholpen om mijn manier van werken aan te passen. Soms moet je gewoon een stap terug doen om verder te komen.
->>>>>>> Stashed changes

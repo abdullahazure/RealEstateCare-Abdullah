@@ -30,7 +30,7 @@
             />
           </div>
 
-          <!-- 🟩 Login & Mail-link -->
+          <!-- Login & Mail-link -->
           <div class="d-flex gap-3 mt-3">
             <button type="submit" class="btn btn-success">Login</button>
             <button @click="sendMagicLink" type="button" class="btn btn-warning d-flex align-items-center gap-2">

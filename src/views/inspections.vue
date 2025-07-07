@@ -86,7 +86,7 @@ onBeforeMount(async () => {
       address.value = `${match.street}, ${match.city}`
     }
   } catch (error) {
-    console.error('❌ Fout bij ophalen van inspecties:', error)
+    console.error('Fout bij ophalen van inspecties:', error)
   }
 })
 </script>
